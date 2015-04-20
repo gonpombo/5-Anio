@@ -1,0 +1,18 @@
+Funciones de una Via.
+Facil de construir pero dificil de revertir.
+Dado un x puedo hayar f(x) pero si tengo f(x) es casi imposible conseguir x.
+5 -> f(5) = 10923878091237 .   12093812983 = f(x) -> x ??????????
+Algoritmos para factorear numerios
+	Quadratic sieve.
+Test de numeros primos, porque tardaria anios en comprobar que un numero grande lo sea, por eso uso los tests, que me dan un nivel de confianza de si el numero es primo o no.
+
+Criptografia publica. -> comunicacion entre dos parets.
+Yo que vos, entro a los POST. Consoleo lo que llega.
+
+
+-.-.-.-.-.-.-.-.-.-
+Solcion al problema dehombre del medio
+Certificado de un sitio, son una o mas claves publicas de ese sitio. Una o mas porque hay varios algoritmos.
+Un servidor web maneja 6, o 7 algoritmos distintos, tanto para encriptar o como para firmar digitalmente.
+Un archivo con las claves publicas, que esta firmada por un tercero.
+La solucion es teniendo un tercero.

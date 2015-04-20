@@ -1,0 +1,39 @@
+Criptologia.
+Ciencia que investiga y estudia la proteccion de las comunicaciones.
+Se encarga de descifrar y cifrar, de que las cosas sean mas seguras.
+
+Criptnoalasis.
+Se encarga de crackear esto otro. Tratar de romper el mecanismo de seguridad que la criptologia crea.
+
+Cifrado.
+Proceso de codificar un mensaje inteligible.
+
+Descifrado.
+Proceso inverso, transformar un mensaje cifrado a su forma original.
+
+Texto Plano.(P)
+Mensaje original.
+
+Texto Cifrado.(C)
+Es el resultado de cifrar un texto plano.
+
+Clave(K).
+Es el elemento necesesario para el proceso de cifrado.
+
+Criptoanalisis.
+El proceso que realiza un tercero, para intentar descrubrir P, K, o ambos.
+Cuando encuentro K, encuentro ambos. Pero tambien se puede encontrar P sin la clave.
+
+Tipo de ataques.                (Conocido por el analista)
+1- Solo se conoce el cifrado. (Solo se conoce el cifrado. Algoritmo de cifrado)
+2- Texto plano conocido. (Algoritmo de cifrado. Textos cifrados para decodificar)
+
+Metodos de cifrado.
+
+1-Tipo de operacon que se realiza - > Trasposicion || Sustitucion.
+2- El numero de claves empleadas - > Simetrico || Asimetrico.
+3- La forma en que es procesado el texto plano - > Cifrado por bloque || Cifrado por flujo.
+
+
+Cifrados de flujo. (MAL EN LA DIAPOSITIVA.)
+	

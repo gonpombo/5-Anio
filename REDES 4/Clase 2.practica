@@ -1,0 +1,58 @@
+Routeo Dinamico.
+Rip solo tiene en cuenta la cantidad de saltos (hops). Hay que tener en cuenta tambien ancho de banda, latencia, etc. Rip inunda la red con mensajes. Updateabla la tabla y enviaba a todos su tabla.
+Se trata de mejorar la metrica.
+
+IGRP: Solo anuncia los cambios en su tabla de ruteo, no TODA la tabla.
+Mensajes de keep-alive menos costosos (hello).
+
+Habilitar IGRP.
+Router(config)# router eigrp "n AS" // Sistema autonomo.
+Router(config-router)# network "red ip" // Anuncio todas las redes que estan directamente conectadas.
+Router(config-router)# no auto-summary
+l8
+
+Sistemas autonomos (A.S) -> un sistema autonomo utiliza protocolo EIGRP, y otro usa OSPF, entonces estos sistemas autonomos se comunican mediante BGP.
+Bandwidth  -> cuello de botella. Elijo el minimo entre los 2.
+Latencia   -> La suma de los 2 delay .
+Los datos los saco de show interface Serial 0/0/0 . Mismo con fasth ethernet en caso de necesitarlo.
+metric = 256 * (BW + delay)
+BW = 10 ^ 7 / min(BW)
+delay = sum(delay [ms]) / 10 [ms]
+Router# show ip eigrp topology //Chequeo resultados con mi cuenta a ver si da lo mismo.
+
+
+OSPF.
+wildcard_mask . mascara de red invertida, los 0 son 1, y los 1 son 0.
+areas. Filtrar los mensajes. No se mande toda al info a todos. SI no quiere usar esto, pone todo en el mismo aereaarea
+Metrica. Se suman los costos.
+Costo = 10 ^ 8 / (BW de la interfaz).
+BW va en bps!.
+auto-cost reference-bandwidth . Se cambia el ancho de banda de referencia.
+Otra forma, es cambiar el costo en la interfaz.
+ip opsf cost_value.
+1<cost_value<65535 
+
+BGP.
+Router(config)# router bgp autonomous_system_#
+Router(config-router)# no synchronization
+Router(config-router)# network network-number mask network-mask // Todas las redes que se encuentran dentro de neustro sistema autonomo.
+Router(config-router)# neighbor IP_address remote-as  autonomous_system_# // El router vecino con el que me voy a comunicar.
+
+Redistribuir con BGP la información aprendida por otros protocolos de ruteo. Ejemplos:
+
+redistribute eigrp autonomous_system_#
+
+redistribute ospf process_ID
+
+- No olvidar de redistribuir también dentro de los protocolos de ruteo interior la información aprendida por BGP. Ejemplo:
+
+En la configuración de OSPF:
+
+redistribute bgp autonomous_system_# subnets
+
+Interfaz LOOPBACK.
+Interfaz logica, no fisicas. Le podes hacer un ping y hace respuesta.
+No fallan nunca. No se caen.
+Se crea: 
+Router(config)# interface loopback port_#
+Router(config-if)# ip address IP_address subnet_mask

@@ -1,0 +1,98 @@
+REGULAR EXPRESSIONS
+
+[abc] cualquier caracter (uno de ellos, a b o c)
+[^abc] cualquier caracter excepto a,b,c
+[a-z] cualquier caracter entre a y z
+\d un digito
+\D un no digito
+\w un caracter
+\W un no caracter
+\s espacio el blanco
+. cualquier caracter
+(abc) abc como grupo
+* caracter precedente o grupo puede estar 0 o mas veces
++ caracter precedente o grupo puede estar 1 o mas veces
+
+ANALISIS SINTACTICO: una buena gramatica nos permite encontrar errores al momento de hacer el analisis en nuestro codigo fuente. Lo otro importante es que tiene que permitir al lenguaje a poder desarrollarse en forma iterativa. o sea una gramatica tiene que contemplar la iteración. No se concibe un lenguaje que no itere. Idem para la seleccion (if/else). Son cosas que forman parte de la gramatica.
+
+Necesitamos reglas (hay que definiarlas) precisas que nos digan la estructura sintactica del lenguaje
+En C por ejemplo tenemos un programa que esta hecho con funciones (el main y las que yo defino). Despues tenemos que una sentencia es una declaracion de expresiones, y ambos son parte de la estructura del lenguaje.
+La sintaxis de los lenguajes d eprogramacion se hacen a partir de gramaticas LIBRES de contexto o BNF o CFG. 
+La gramatica es lo que nos va a permitir tener un buen lenguaje y poder construir un buen compilador. 
+
+Como el parser de una gramatica entra dentro de un compilador:
+
+tenemos:
+
+--PROGRAMA --> [ANALIZADOR LEXICO(errores sintacticos)] -----token----> [PARSER] --Arbol-->[Los demas pasos (analisis 																<-pedirtoken---					   semantico, generacion de codigo 																							   intermedio etc)]--																											--Representaciones intermedias-->
+								
+Y de analizador lexico parser y otros pasos sale una doble flecha con TABLA SIMBOLOS
+
+
+Parser:
+	1) Universal: Algoritmo de Earley y Cocke Younger
+	2) Top Down: TOP: coincide con la raiz o con el root. Arranco con mi raiz
+	3) Bottom Up: BOTTOM: las ramas/leaves.
+
+En los casos 2 y 3 los recorridos son de izquierda a derecha. (como los arboles binarios).
+
+
+Gramatica representativa: Llamamos asi a la gramatica que permite hacer uso de alguno de los metodos de corrido o de parseo. 
+En general, si teneemos una gramatica que empieza con un while, o un if, o declaramos una variable int, a eso es a lo que llamamos una gramatica facil de recorrer. La gramatica tiene que ser lo mas versatil posible. estas 3 anteriormente nombradas son palabras "guias" y reservadas, y nos ayudan a saber cuales son las reglas de produccion que vamos a usar despues.
+	La GR se apoya mucho en expresiones. Estas expresiones agrega complejidad debido a: Asociatividad  y precedencia.
+ 
+-----------------
+ERRORES DE SINTAXIS.
+Como los controlo y los recupero los errores.
+
+2 Estrategias de correccion que dependen del metodo de barrido:
+- Modo de panico.
+- Recuperacion de frase.
+
+Los errores se pueden dividir en 
+- Errores lexicos: cuando escribimos mal las palabras reservadas(jota puto). || . Cuadno dentro de programa cambiamos el nombre de una variable (Lo definimos de una manera y lo usamos de otra. ej: valorLado valoLado).
+- Error sintactico: corchete o llave mal ubicada o demas. O que haya un switch sin case.
+- Error Semantico: tiene un return pero la funcion es void. No deberia devovler nada. O pasarle variables a una funcion que no recibe. Diferencia de tipo.
+- Logico: a=b || a==b
+
+Recuperacion por modo de panico:
+Si falto una llave, empiezo a agregar llaves. Asi en algun momento el error deja de aparecer.
+Entro en el modo panico, y no pudo arreglar la causa.
+
+Recuperacion por modo de fase:
+El compilador continua, y lo que hace es reemplazar la zona de error por algun string que le permita al PARSER continuar.
+
+REGLA DE PRODUCCION:
+	Es lo que define como van a ser mis cadenas de caracteres. como puedo combinar terminales y no terminales para generar una cadena que sea valida en mi gramatica
+
+stmt ::= if(expr) stmt else stmt
+
+donde stmt es un statement o sentencia y expr es una expresion
+
+
+Gramatica de la suma, resta multiplicacion y division:
+-> es derivar en
+expr -> expr + term
+expr -> expr - term
+expr -> term
+term -> term * factor
+term -> term / factor
+term -> factor
+factor (expr)
+factor => id
+
+Derivacion de reglas.
+
+E -> E + E | E * E | - E | (E) | id
+E -> -E
+expre expre
+E => -E  (=> implica). Podemos reempalzar una E por una -E.
+
+E->(E)
+E*E => (E) * E
+E*E => E * (E)
+F => -E => -(E) => -(id)
+A = NT 
+A -> j
+alpha A beta
+aAb => alpha j beta

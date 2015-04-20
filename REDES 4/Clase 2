@@ -1,0 +1,101 @@
+Protocolo ethernet con topologia estrella.
+El unico cable que propsero es el 10 Base T porque usa el cable UTP. Cable telefonico.
+Topologia estrella. La distancia maxima que puede haber en un hub de toda central a una computadora es de 100 metros.
+Se usan 4 pines(hilos). 2 para transmitir 2 para recibir.
+
+Hub -> Half-Duplex.
+
+100Base-T =>  100 velocidad. T por par trenzado. Base, porqe se transmite en banda base.
+
+Interfaces Routers
+
+Serial 0/0/1 . Los dos primeros numero de Slot. El ultimo numero de puerto.
+
+Fast Ethernet. (Surge como modificacion del protocolo ethernet). [Diapositiva (100Mbps Fast Ethernet)]
+Con los 46 bits de la trama que se tienen en el carrier, es necesario. Porque tiene 100 metros de distancia. No hubo que cambiarlo, no como en gigabit ethernet. No se cambio, porqe estaba calculado para una lan de 2000 metros. Aumento la velocidad pero se redujo la extension de las redes.
+Si una red soporta fast ethernet, tambien soporta ethernet. Baja su velocidad.
+0/1 Significa que tiene Slot 0, y Puerto 1.
+Pretende que la distancia sea de 100 metros, distancia de 100 metros de cobre, y con una red central que es el hub.
+La diferencia esta en aumentar la velocidad en 10. En vez de 10, 100Mbps. Ademas, usa los 8 pines, no como en Ethernet que solo usaba 4.
+100 Base-T4.(Se usa) Usa 4 pares, es decir 8 hilos.(El total de lo que tiene el conector). Tiene la ventaja que peude usarse UTP, categoria 3, 4 o 5. El codigo que usa para la transmisiion es 8B6T, NRZ.(8 Binario, 6 Ternario). Divide la transmision de la trama en varios pares. (*)
+100 Base-TX(Se usa): 
+1- Usa 2 pares, como ethernet. STP -> Shielded Twisted Pair. Tiene un blindaje, asi reduce las interferencias. Mayor calidad que el UTP (Unshielded Twisted Pair), es decir que no esta blindado. No usa codificacion manchester. Usa MLT. Codificacion ternaria.
+2- Usa 2 pares, pero cables UTP con categoria 5. La normal es la 3.
+100 Base-FX(A tu casa, no lo usa ni la mama): Utiliza dos fibras opticas. Una para transmitir al nodo central, y la otra del nodo a la terminal central.
+
+(*)8B6T.
+1 Byte se mapea una palabra de 6 simbolos ternarios.
+- - - - - - - - ---------> - - - - - - 
+Tengo 3 opciones para un simbolo ternario. (0, +, -)
+Tengo que mapear 2 ^ 8 palabras = 256 palabras.
+Tengo 3 ^ 6 palabras en simbolos ternarios. >>> 2 ^ 8 . Por ende, debo elegir las mejores palabra en simbolo. Teniendo en cuenta el balance y el sincronismo. Balance: cant de pulsos + y -, sea la misma. El sincronismo significa que haya cambios. Ayudan a sincronizar el reloj, y no perder el clock. Tiene que haber transiciones.
+Con estos criterios, se eligieron las mejores 256 palabras de 6 simbolos ternarios.
+Algunas palabras, tienen un pulso + de mas.
+
+Se podria haber elegido otra codificacion como manchester, pero eso agrande el ancho de banda y aca tenemos ancho de banda limitado.Por eso el codigo manchester se descarto en ethrent y gigabit ethernet, porqeu este tiene una eficiencia del 50% con los que se usan.
+
+Reducir la velocidad.
+Tenemos 4 pares.
+Se divide la transmision en 3 pares de cobre en paralelo, para reducir la velocidad en 1/3.
+Del otro lado tambien se usan 3 pares. Dos de los 4 cables, necesitamos que soporten transmision bidireccional.
+El cancelador de eco se pone en cada extremo(nodo central y estacion), substrae la senal que esta transmitiendo, para quedarse con lo que esta llegando. 
+Estacion	Hub
+1-------->
+2--------> <-------
+3--------> <-------
+4		  <-------
+El splitor, envia cada byte transformado, por una rama distina por vez.
+Los bytes llegan a 100Mbaudios. Cuando los converti en simbolos, voy a tener 100 * 6/8. (En el tiempo que mandaba 8, ahora mando 6). Es decir, 75 Mbaudios. Cuando se splitea en 3. Cada linea, debe soportar 25Mbaudios. Que en distancia hasta 100 metros, soporta 25 Mbaudios.
+
+Solucionar problema del balance.(Que tienen mas de un positivo): 
+En cada par de cobre, se guarda el balance. Cuando vuelva a tocar enviar por un par de cobre que tengo un positivo de mas, la proxima palabra que se mande se invierte (el receptor se da cuenta ya que tiene un negativo de mas y la invierte), y en el cable luego se balancea. Por ende, el cable siempre esta balanceado o tiene un positivo de mas.
+
+
+Gigabit Ethernet. [Diapositiva Gigabit Ethernet]
+La velocidad se multiplica por 10. (1000Mbps)
+Diferencias:
+- Carrier Extension: Se hicieron caluclos, y ya no alcanzan 46 bits.
+- Longitud de trama: Se necesitan 4096 bits en vez de los 512 (64 bites) para 10/100 Mbps
+- Frame Bursting: Si tiene varias tramas cortas listas para enviar, las junta y las manda una pegada a la otra. Sin abandonar el control del medio. Esto evita el overhead, de rellenar cada trama corta de los 4096 bits (o 512 bytes), y tambien de competir por el medio para poder enviarlas.
+
+Con un switch, no hay colisiones. Se puede trabajar en full duplex. No hay colisiones. Las caracterizticas de carrier extension y frame bursting, no son necesarios. No hay que rellenar la trama hasta llegar a un minimo, .. . Ya que no hay colisiones. La estacion transmite cuando quiere.
+1000Base-T .
+Se divide en 4 pares birideccionales, no en 3 como antes.
+Se necesita implementar cancelacion de eco, en los 4 pares bidireccionales.
+El cable tiene que ser de mejor calidad, tiene que ser categoria 5(UTP).
+La transmision tiene 5 niveles para bajar mas la velocidad.
+CODIFICACION: 5-PAM TCM. PAM -> Modulacion por Amplitud de Pulso (Banda base). TCM -> Trellis Coded Modulation. Se encarga de la detecion y correcion de ruido, por el ruido. Aumenta la velocidad de transmision.
+ARQ(Automatic Repeat Request): Se hace deteccion de errores y retransmision. (CRC).
+FEC(Forward Error Correction): Se hace deteccion y control de errores. Usa la redundancia para corregir los errores, y no aumenta la velocidad de transmision.(TCM)
+5 simbolos (2 positivas, 2 negativas, 0). Puedo transmitir a menor velocidad a misma distancia.
+
+
+Bridge [Diapositiva Bridge].
+Hoy en dia hablar de un bridge, es lo mismo de hablar de un switch. Pero operan a nivel MAC.
+Motivos:
+Confiabilidad. Si se corta el cable, se pierde todo lo de esa parte del puente.
+Performance. Cant de trafico que se puede transmitir. Reduzco la cantidad de colisiones.
+Seguridad. Todos ven el trafico de todos. En cambio divido con bridges y no puedo ver el trafico de todos.
+Geografia. Puede que esten las dos lan en lados geograficos distintos, y se usan dos puentes en vez de uno para conectarlas. Se conectan por radio, con antenta. Pero necesito un puente de cada lado.
+
+
+Ruteo Fijo.
+Ruteo simple y mas comun. Es como el ruteo estatico. Se configura manuelmente.
+Cada puente debe saber si pasa la trama o no, y a cual.
+Si quiero de tal mac origen a tal mac destino, por que camino me conviene ir. Criterio utilizad, camino que pase por la menro cantidad de saltos (puentes).
+Solo hay que cambiar las configuraciones, cuando hay cambios en la topologia.
+
+Ruteo dinamico.
+Spannign tree. (MAC)
+Necesita mas caminos, para hacer balance de cargas, o si se produce alguna falla, sin necesidad de un operador para que lo configure. 
+El puente automatic construye la tabla de ruteo.
+Usa 3 mecanismos:
+1- Frame forwarding: reenviar tramas. Tiene que venir sin errores, si viene con errorees el CRC la descarta.
+Si la direccion de destino esta en la tabla, se fija si el destino esta en el mismo puerto que el. Si esta en el mismo puerto, no tiene que pasar la trama por ningun lado, porque ya se escucho. Si no es igual el ppuerto, reenvia la trama por el puerto especificado.Si no esta en la tabla, reenvia la trama por todos los puertos menos en el mismo. (Cuando no conoce la mac destino, se comporta como un HUB el BRIDGE).
+2- Adress Learning: Aprendizaje de direcciones. Mirando la direccion fuente puede aprender. Mira la dir fuente, si no la tiene la agrega con un nuevo timer. Si ya la tenia, updetea la direccion y el timer.
+3- Loop resolution: Resolver loops. 
+Caso 1 : Los puentes si conocen las ubicaciones de A y B. Se actualiza mal la tabla.
+Caso 2 : Los puentes no conocen las ubicaciones de A y B. Como no saben por donde esta, forwardean. Se forwardean infinitamente, explota el mundo, y mueren todos.
+Se construye un Spanning Tre, un arbol de expansion. Es un arbol magico, que pasa por todas las redes, que mantiene la conectividad, pero que no contiene lazos (loops).
+A cada puente se le asigna un identificador unico, y se intercambian mensajes entre lso puentes y de esta forma se puede construir el spanning tree.
+Cuando un puente falla, no manda mas mensajes de keep alive, y entra en activo el puente qe estaba inactivo.

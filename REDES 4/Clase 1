@@ -1,0 +1,62 @@
+_____________________________________________________________________________
+|			RAM (Donde se almacena la config sin guardar).
+|				(running config)
+|______________________________________________________________________________
+FLASH 						|	ROM						|	Non Volatil RAM
+(Donde se almacena el SO.)	|	(SO de emergencia)		|	(Start Up config)	
+							|							|
+	
+1- Al bootearse el router arranca desde la ROM.
+2- La Rom: Analiza el IOS (S.O.). Corre diagnosticos de hardware. Realiza una recuperacion de password.
+
+IOS: Integrated Operative Sistem.
+
+CABLES.
+Cables seriales: para conectar equipos entre si.
+DTE: conector macho.
+DCE: conector hembra.
+
+
+-----
+Comandos.
+Modo > para ver.
+Show ?    ||	help -  Comandos.
+
+Tipear Enable para comenzar.
+Router> enable
+Router	 show running-config  (Config actual del router)
+Router# configure  (terminal)
+Router(config)# interface serial 0/0/0
+Router(config-if)# ip address 192.168.2.2 255.255.255.252 //Falta habilitarla.
+Router(config-if)# no shutdown
+Router(config-if)# clock rate 64000
+control + z (Vuelvo al Router#)
+Mismo con las demas interfaces. (Y)
+#show ip route (Saber routeo estatico.)
+Router# configure
+Router(config)# interface serial 0/0/0 
+Router(config)# ip route direccion_red mascara next_hop
+
+Router(config)# interface fastEthernet 0/0
+Router(config-if)# ip adress 200.0.0.2 255.255.255.252
+Router(config-if)# no shutdown
+Router(config-if)# clock rate 64000
+Router# show interface fasEthernet 0/0 || serial 0/0/1 // Para ver si esta levantada o no la interface. Tiene que tener configurada tanto la direccion logica como fisica. 
+
+RUTAS ESTATICAS Y RUTAS DEFAULT
+El router realiza un AND bit a bit entre la ip destino y la mask.
+Si el resultado es la subred de destino, entonces lo manda al nexthop. Sino va a la siguiente line. Y si ninguna linea lo cumple, entonces descarta el paquete.
+Por eso la ruta default, se utiliza la sub red 0.0.0.0 con mask 0.0.0.0 para que el AND siempre coinicida y tenga una ruta por default. Esta va a ser la ultima linea, por lo tanto si no cumple ninguna de las anteriores, lo manda por la ruta default.
+Esto es util cuando en una interfaz tenemos salida a varias subredes, para no tener que estar cargando las rutas estaticas una por una.
+Router(config)# ip route 0.0.0.0 0.0.0.0 192.168.1.1 (Interface a donde llega.) B(1.1) <----------- A(1.0) sale de A para B. (B es el next hop).
+
+Mensajes de Keep Alive. El rotuer los manda para saber si una interfaz esta levantada o no. Se mandan constantemente.
+Se puede usar una interfaz sin conectar nada
+Router(config-if)# no keepalive (dentro de la interfaz).
+
+
+RIP!
+Router# router rip
+Router(config-router)# version 2
+Router(config-router)# network subred (192.168.2.0)
+Router(config-router)# no auto-summary

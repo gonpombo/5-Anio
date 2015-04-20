@@ -1,0 +1,53 @@
+* = Diapositivas. Temas nuevos.
+*Direcciones IP [diapositiva].
+
+Direcciones de 32 bits. Todo el tema de clases .
+
+Hay direcciones ip dentro de las clases que son privadas, que no se utilizan. El problema es que ocupan direcciones publicas.
+
+*Subredes y mascaras de subred.
+Aislar a la internet del crecimiento de redes y de la complejidad del ruteo. El sitio aparece como si fuese una nueva subred, no importa que se agreguen subredes, porque estan todas metidas en una misma red. Solo hace falta connocer la red.
+Se utiliza una porcion del host para identificar la sub red, y los bits restantes para el host.
+
+Numero maximo de subred => 2 ^ n - 2
+Numero maximo de hosts => 2 ^ r - 2
+
+*ICMP.
+Transmitir mensajes de control de un router a un host fuente, o del host destino al host fuente.
+Provee una realimentacion o feedback del problema.
+Un router tiene un problema y no lo puede diagnosticar, entonces lo va a tener qe tirar y le va a avisar al host fuente. Cuando hay un problema, el router le avise al host fuente que lo va a tirar mediante ICMP.
+Saber cual fue el paquete que origino el problema. Leyendo el header Ip, se puede saber quien origino el datagrama y a que destino iba. Y los 64 primeros bits del datagrama orignal envia el comienzo del headear de TCP/UDP.
+Mensajes: 
+- Type 3 ->Destino inalcanzable. Code:
+0- Network inalcanzable.
+1- Host inalcanzable.
+2- Protocol inalcanzable 
+3- Puerto inalcanzable
+4- Fragmentacion necesaria.
+5- Fallo ruteo fuente. No esta disponible la ruta.
+9- Destination network administrativamente prohibida.(prohibited)
+10- Destination host prohibido. No se puede llegar a un host especifico.
+13- Communication adm proh by filtering. Algun router te deniega el paso.
+Lista de control de acceso. Para prohibir ciertas cosas por seguridad.
+
+-Type 11 ->Tiempo excedido. Code:
+0- TTL llego a 0 durante el transito.
+1- TTL se hizo 0 durante el reenzamble, en el destino.
+
+-Type 4 -> Source Quench. Silenciar fuente. Code: 
+0- Un router tiene le buffer casi lleno, y no puede guardar mas datagramas. Para prevenir, o cuando se llena. Manera de hacer control de flujo.
+
+-Type 12 -> Problema de parametros (En un datagrama hubo algo seteado mal incorrectamente) . Code:
+0- Error en el header Ip.
+1- Esta faltando una opcion requerida.
+
+-Type 5 -> Redirect. Gateway Internet Adress. El router le comunica al host que la proxima vez lo mande directamente a la gateway adress que le pasa. Code:
+0- Redirect for networ. Redireccionamiento para una red.
+
+-Type 0 -> Echo. Echo Reply. Permite medir la coninuidad. Si es accesible una direccion Code:
+0- 
+
+-Type 13 -> Timestamp. Permite medir tiempo. En originate Timestamp se coloca el tiempo que tardo .Code:
+0- 
+
+-Type 14 ->Timestamp reply. Coloca el tiempo que tardo el msj en llegarle a el. Y tambien el de transmision de respuesta. Y el que recibe qe se copia del 13.
