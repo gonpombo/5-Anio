@@ -1,0 +1,6 @@
+Modelo entidad relacion -> una forma de representacion del punto de vista informatico del asunto, con semantica.	
+
+Una lista tiene muchos productos.
+Se factura el pedido. Orden de pedido. Cliente. Producto.
+Almacenamos la factura, con lo que se vendio, y que puede diferir.
+Modelar? 
